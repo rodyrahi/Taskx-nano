@@ -1,4 +1,6 @@
-FunctionX-Nano
+# FunctionX-Nano
+
+
 Overview
 FunctionX-Nano is an open-source model designed to map natural language processing (NLP) prompts to programming functions, identifying the best-matching functions and their optimal parameters based on the input prompt. This lightweight tool aims to bridge the gap between natural language and executable code, enabling developers to integrate NLP-driven automation into their workflows.
 Features
