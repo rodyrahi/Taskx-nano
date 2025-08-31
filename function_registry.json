@@ -1,0 +1,16 @@
+{
+  "embed_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "digest": "154b6a1e176122fea838fb7e8b2104b8380195c9d2aa0bbb93fcf2035ab77696",
+  "entries": [
+    {
+      "name": "open_notepad_and_write",
+      "signature": "(text: str) -> str",
+      "doc": "Opens Notepad (or default text editor) and writes the given text into it.",
+      "module": "testing_funcs.funcs",
+      "args": [
+        "text"
+      ],
+      "kwonly_args": []
+    }
+  ]
+}
