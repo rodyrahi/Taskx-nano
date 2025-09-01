@@ -54,6 +54,15 @@ def open_notepad_and_write(text: str) -> str:
     return "Notepad opened with text."
 
 
+@funx
+def add_numbers(a: int, b: int) -> int:
+    """adds the sum of two numbers a and b are integers given as input"""
+    print(a + b)
+    return a + b
+
+
+
+
 exportable_registry = {
     name: {k: v for k, v in data.items() if k != "function"}
     for name, data in FUNCTION_REGISTRY.items()

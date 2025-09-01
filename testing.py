@@ -1,4 +1,3 @@
-# vector_functions_runtime.py
 import os
 import re
 import json
@@ -14,7 +13,7 @@ from transformers import AutoTokenizer
 
 # ---- your stuff ----
 from testing_funcs.funcs import FUNCTION_REGISTRY, call_function
-from train import ParamExtractionModel, extract_parameters  # must exist
+from train import ParamExtractionModel, extract_parameters
 
 # ===============================
 # Config
@@ -25,9 +24,10 @@ META_PATH = "function_registry.json"
 PARAM_MODEL_PATH = "param_model.pt"
 PARAM_TO_IDX_PATH = "param_to_idx.json"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+MAX_STEPS = 10  # Max number of function calls to prevent infinite loops
 
 # ===============================
-# Helpers
+# Helpers (unchanged from your code)
 # ===============================
 def _signature_info(fn) -> Tuple[List[str], List[str]]:
     """Return ordered positional args and keyword-only args."""
@@ -56,7 +56,6 @@ def _registry_snapshot() -> List[Dict[str, Any]]:
             "args": pos_args,
             "kwonly_args": kwonly_args,
         })
-    # keep deterministic order
     items.sort(key=lambda x: x["name"])
     return items
 
@@ -69,11 +68,10 @@ def _digest(entries: List[Dict[str, Any]]) -> str:
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 # ===============================
-# Build / Load Index
+# Build / Load Index (unchanged)
 # ===============================
 def build_or_load_index(force_rebuild: bool = False):
     base_model = SentenceTransformer(EMBED_MODEL)
-
     entries = _registry_snapshot()
     current_digest = _digest(entries)
 
@@ -84,7 +82,6 @@ def build_or_load_index(force_rebuild: bool = False):
             index = faiss.read_index(INDEX_PATH)
             return base_model, index, meta["entries"]
 
-    # Build fresh
     texts = [_entry_text(e) for e in entries]
     embs = base_model.encode(texts, convert_to_numpy=True)
     faiss.normalize_L2(embs)
@@ -104,7 +101,7 @@ def build_or_load_index(force_rebuild: bool = False):
     return base_model, index, entries
 
 # ===============================
-# Load Parameter Model
+# Load Parameter Model (unchanged)
 # ===============================
 def load_param_model():
     base_model_for_params = SentenceTransformer(EMBED_MODEL)
@@ -119,7 +116,7 @@ def load_param_model():
     return model, tokenizer, param_to_idx
 
 # ===============================
-# Predict best function
+# Predict best function (unchanged)
 # ===============================
 def predict_best_function(prompt: str, base_model: SentenceTransformer, index, entries, top_k: int = 1):
     emb = base_model.encode([prompt], convert_to_numpy=True)
@@ -131,79 +128,104 @@ def predict_best_function(prompt: str, base_model: SentenceTransformer, index, e
     return best_entry, score
 
 # ===============================
-# Extract + order params
+# Extract + order params (unchanged)
 # ===============================
 def extract_and_align_params(prompt: str, best_entry: Dict[str, Any],
                              param_model, tokenizer, param_to_idx) -> Tuple[List[Any], Dict[str, Any]]:
-    """
-    Return (ordered_args, kwonly_kwargs) aligned to function signature.
-    """
     extracted = extract_parameters(param_model, tokenizer, prompt, param_to_idx, device=DEVICE)
     extracted = extracted or {}
-
-    # Positional args in order
     ordered_args = []
     for name in best_entry["args"]:
         if name in extracted:
             ordered_args.append(extracted[name])
-        # If missing and function likely has a default, it's fine to skip (Python will use default)
-
-    # Keyword-only kwargs
     kwonly_kwargs = {k: extracted[k] for k in best_entry["kwonly_args"] if k in extracted}
     return ordered_args, kwonly_kwargs
 
 # ===============================
-# Predict + run
+# Predict + run (modified for sequential calls)
 # ===============================
-def predict_and_run(prompt: str, top_k: int = 1):
-    # 1) Ensure FAISS index reflects current FUNCTION_REGISTRY
+def predict_and_run(prompt: str, top_k: int = 1, max_steps: int = MAX_STEPS):
+    # Initialize context to store function outputs and history
+    context = []  # List of dicts: {"function": str, "args": list, "kwargs": dict, "result": Any, "error": str}
+    current_prompt = prompt
+    step = 0
+
+    # Load FAISS index and parameter model once
     base_model, index, entries = build_or_load_index()
-
-    # 2) Find best function
-    best_entry, score = predict_best_function(prompt, base_model, index, entries, top_k=top_k)
-
-    # 3) Load param model & extract params
     param_model, tokenizer, param_to_idx = load_param_model()
-    ordered_args, kwonly_kwargs = extract_and_align_params(prompt, best_entry, param_model, tokenizer, param_to_idx)
 
-    # 4) Call real function
-    name = best_entry["name"]
-    try:
-        result = call_function(name, *ordered_args[0], **kwonly_kwargs)
-        return {
-            "prompt": prompt,
-            "best_match": best_entry,
-            "similarity": score,
+    while step < max_steps:
+        # 1) Predict the best function for the current prompt
+        best_entry, score = predict_best_function(current_prompt, base_model, index, entries, top_k=top_k)
+
+        # 2) Check for a "done" function or low confidence (optional stopping criteria)
+        if best_entry["name"] == "done" or score < 0.1:  # Adjust threshold as needed
+            break
+
+        # 3) Extract parameters aligned to the function's signature
+        ordered_args, kwonly_kwargs = extract_and_align_params(current_prompt, best_entry, param_model, tokenizer, param_to_idx)
+
+        # Fix for single argument case (from your original code)
+        if len(ordered_args) == 1:
+            ordered_args = ordered_args[0]
+
+        # 4) Call the function
+        name = best_entry["name"]
+        step_result = {
+            "function": name,
             "ordered_args": ordered_args,
             "kwonly_kwargs": kwonly_kwargs,
-            "result": result
-        }
-    except Exception as e:
-        return {
-            "prompt": prompt,
-            "best_match": best_entry,
             "similarity": score,
-            "ordered_args": ordered_args,
-            "kwonly_kwargs": kwonly_kwargs,
-            "error": str(e)
         }
+        try:
+            result = call_function(name, *ordered_args, **kwonly_kwargs)
+            step_result["result"] = result
+        except Exception as e:
+            step_result["error"] = str(e)
+            context.append(step_result)
+            break
+
+        # 5) Append to context
+        context.append(step_result)
+
+        # 6) Update the prompt with the latest output for the next iteration
+        # Include the original prompt and the latest function output
+        current_prompt = f"{prompt}\nPrevious output: {result}"
+
+        step += 1
+
+    # 7) Return the full execution trace
+    return {
+        "prompt": prompt,
+        "steps": context,
+        "final_result": context[-1]["result"] if context and "result" in context[-1] else None,
+        "error": context[-1]["error"] if context and "error" in context[-1] else None
+    }
 
 # ===============================
-# CLI / Demo
+# CLI / Demo (updated)
 # ===============================
 if __name__ == "__main__":
-    # Example prompt
-    prompt = "write 'hey there how are you doing' in the default text editor"
+    # Example prompt that requires sequential calls
+    prompt = "open notepad and write Hello World in it "
 
     out = predict_and_run(prompt)
+    
     print("\n--- Prediction & Execution ---")
-    print("Prompt:", out["prompt"])
-    print("Best Function:", out["best_match"]["signature"])
-    print("Similarity:", out["similarity"])
-    print("Ordered Args:", out["ordered_args"])
-    if out["kwonly_kwargs"]:
-        print("KW-only Kwargs:", out["kwonly_kwargs"])
-    if "result" in out:
-        print("Result:", out["result"])
-    else:
-        print("Execution Error:", out["error"])
+    print("Original Prompt:", out["prompt"])
+    print(f"Completed {len(out['steps'])} steps:")
+    for i, step in enumerate(out["steps"], 1):
+        print(f"\nStep {i}:")
+        print("Function:", step["function"])
+        print("Similarity:", step["similarity"])
+        print("Ordered Args:", step["ordered_args"])
+        if step["kwonly_kwargs"]:
+            print("KW-only Kwargs:", step["kwonly_kwargs"])
+        if "result" in step:
+            print("Result:", step["result"])
+        else:
+            print("Error:", step["error"])
+    print("\nFinal Result:", out["final_result"])
+    if out["error"]:
+        print("Final Error:", out["error"])
+        
