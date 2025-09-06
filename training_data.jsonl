@@ -1,27 +1,37 @@
-{"prompt": "Sum 5 plus 10 and write it in notepad", "entities": [[4, 5, "PARAMETER"], [11, 13, "PARAMETER"], [18, 37, "FUNCTION"]]}
-{"prompt": "What is 5+6?", "entities": [[8, 9, "PARAMETER"], [10, 11, "PARAMETER"], [0, 7, "FUNCTION"]]}
-{"prompt": "Add 3 and 7.", "entities": [[4, 5, "PARAMETER"], [10, 11, "PARAMETER"], [0, 3, "FUNCTION"]]}
-{"prompt": "Sum of 10 and 20", "entities": [[7, 9, "PARAMETER"], [14, 16, "PARAMETER"], [0, 3, "FUNCTION"]]}
-{"prompt": "Calculate 15 minus 4.", "entities": [[10, 12, "PARAMETER"], [19, 20, "PARAMETER"], [0, 9, "FUNCTION"]]}
-{"prompt": "Multiply 8 by 9 please.", "entities": [[9, 10, "PARAMETER"], [14, 15, "PARAMETER"], [0, 8, "FUNCTION"]]}
-{"prompt": "What's the product of 2.5 and 3?", "entities": [[22, 25, "PARAMETER"], [30, 31, "PARAMETER"], [0, 6, "FUNCTION"]]}
-{"prompt": "Divide 12 by 3.", "entities": [[7, 9, "PARAMETER"], [13, 14, "PARAMETER"], [0, 6, "FUNCTION"]]}
-{"prompt": "Find 7.5 plus 4.2.", "entities": [[5, 8, "PARAMETER"], [14, 17, "PARAMETER"], [0, 4, "FUNCTION"]]}
-{"prompt": "Subtract 100 from 200.", "entities": [[9, 12, "PARAMETER"], [18, 21, "PARAMETER"], [0, 8, "FUNCTION"]]}
-{"prompt": "Add 1.5 to 2.7 please.", "entities": [[4, 7, "PARAMETER"], [11, 14, "PARAMETER"], [0, 3, "FUNCTION"]]}
-{"prompt": "What is 50 times 2?", "entities": [[8, 10, "PARAMETER"], [17, 18, "PARAMETER"], [0, 7, "FUNCTION"]]}
-{"prompt": "Compute 0.5 plus 1.2.", "entities": [[8, 11, "PARAMETER"], [17, 20, "PARAMETER"], [0, 7, "FUNCTION"]]}
-{"prompt": "Multiply 25 by 4.0.", "entities": [[9, 11, "PARAMETER"], [15, 18, "PARAMETER"], [0, 8, "FUNCTION"]]}
-{"prompt": "Search on google.com for news.", "entities": [[10, 20, "URL_PARAMETER"], [0, 6, "FUNCTION"]]}
-{"prompt": "Watch a video on youtube.com.", "entities": [[17, 28, "URL_PARAMETER"], [0, 5, "FUNCTION"]]}
-{"prompt": "Open facebook.com in browser.", "entities": [[5, 17, "URL_PARAMETER"], [0, 4, "FUNCTION"]]}
-{"prompt": "Visit x.com for updates.", "entities": [[6, 11, "URL_PARAMETER"], [0, 5, "FUNCTION"]]}
-{"prompt": "Add 5 and check google.com.", "entities": [[4, 5, "PARAMETER"], [16, 26, "URL_PARAMETER"], [0, 3, "FUNCTION"], [10, 15, "FUNCTION"]]}
-{"prompt": "Check news on bbc.co.uk today.", "entities": [[14, 23, "URL_PARAMETER"], [0, 5, "FUNCTION"]]}
-{"prompt": "Sum 10 and 20 on x.com.", "entities": [[4, 6, "PARAMETER"], [11, 13, "PARAMETER"], [17, 22, "URL_PARAMETER"], [0, 3, "FUNCTION"]]}
-{"prompt": "Browse twitter.com for trends.", "entities": [[7, 18, "URL_PARAMETER"], [0, 6, "FUNCTION"]]}
-{"prompt": "Add 3.14 and 2.71 on x.com.", "entities": [[4, 8, "PARAMETER"], [13, 17, "PARAMETER"], [21, 26, "URL_PARAMETER"], [0, 3, "FUNCTION"]]}
-{"prompt": "Sum 5 plus 10 and write it in notepad.", "entities": [[4, 5, "PARAMETER"], [11, 13, "PARAMETER"], [0, 3, "FUNCTION"], [18, 23, "FUNCTION"]]}
-{"prompt": "Add 7 and 8 then open notepad with result.", "entities": [[4, 5, "PARAMETER"], [10, 11, "PARAMETER"], [0, 3, "FUNCTION"], [17, 21, "FUNCTION"]]}
-{"prompt": "write hello world in notepad", "entities": [[0, 5, "FUNCTION"], [6, 17, "PARAMETER"]]}
-{"prompt": "open grok , youtube and google each in tabs in browser", "entities": [[5, 9, "PARAMETER"], [12, 19, "PARAMETER"], [24, 30, "PARAMETER"], [31 , 54, "FUNCTION"]]}
+{"prompt": "write hello world in notepad", "entities": [[0, 5, "FUNCTION"], [6, 17, "TEXT_PARAMETER"]]}
+{"prompt": "write rajvendra rahi in notepad", "entities": [[0, 5, "FUNCTION"], [6, 20, "TEXT_PARAMETER"]]}
+{"prompt": "write hey there in notepad", "entities": [[0, 5, "FUNCTION"], [6, 15, "TEXT_PARAMETER"]]}
+{"prompt": "open kamingo.in in the browser", "entities": [[5, 15, "URL_PARAMETER"], [23, 30, "FUNCTION"]]}
+
+{"prompt": "search for cat videos on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [11, 21, "TEXT_PARAMETER"], [36, 67, "FUNCTION"]]}
+
+{"prompt": "search dog pictures on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 19, "TEXT_PARAMETER"], [34, 65, "FUNCTION"]]}
+
+{"prompt": "search latest news on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 18, "TEXT_PARAMETER"], [33, 64, "FUNCTION"]]}
+
+{"prompt": "search weather today on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 20, "TEXT_PARAMETER"], [35, 66, "FUNCTION"]]}
+
+{"prompt": "search python tutorials on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 24, "TEXT_PARAMETER"], [39, 70, "FUNCTION"]]}
+
+{"prompt": "search football highlights on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 28, "TEXT_PARAMETER"], [43, 74, "FUNCTION"]]}
+
+{"prompt": "search cooking recipes on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 23, "TEXT_PARAMETER"], [38, 69, "FUNCTION"]]}
+
+{"prompt": "search space exploration on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 25, "TEXT_PARAMETER"], [40, 71, "FUNCTION"]]}
+
+{"prompt": "search stock market updates on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 30, "TEXT_PARAMETER"], [45, 76, "FUNCTION"]]}
+
+{"prompt": "search funny memes on google and take a screenshot of the result",
+ "entities": [[0, 6, "FUNCTION"], [7, 19, "TEXT_PARAMETER"], [34, 65, "FUNCTION"]]}
+
+
+
