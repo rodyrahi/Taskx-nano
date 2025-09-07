@@ -15,7 +15,7 @@ TaskX-Nano is an open-source, lightweight tool that maps natural language proces
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/rodyrahi/functionx-nano.git
+   git clone https://github.com/rodyrahi/Taskx-nano.git
    cd functionx-nano
    ```
 2. Install dependencies:
