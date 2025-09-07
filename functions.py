@@ -144,12 +144,17 @@ def open_application_by_name(application_name):
     """
     Open an application by its name using the system's default method.
     """
+
+    application_name = str(application_name)+ ".exe"
     if not application_name:
         return "Error: No application name provided"
     
     try:
         if platform.system() == "Windows":
-            subprocess.Popen(['start', '', application_name], shell=True)
+            # Use 'os.startfile' for best compatibility with Windows
+            os.startfile(application_name)
+        elif platform.system() == "Darwin":
+            subprocess.Popen(['open', '-a', application_name])
         else:
             subprocess.Popen([application_name])
         return f"Application '{application_name}' opened"
