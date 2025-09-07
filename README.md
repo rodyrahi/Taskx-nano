@@ -16,7 +16,7 @@ TaskX-Nano is an open-source, lightweight tool that maps natural language proces
 1. Clone the repository:
    ```bash
    git clone https://github.com/rodyrahi/Taskx-nano.git
-   cd functionx-nano
+   cd Taskx-nano
    ```
 2. Install dependencies:
    ```bash
@@ -32,18 +32,9 @@ TaskX-Nano is an open-source, lightweight tool that maps natural language proces
 1. **Write a Prompt**: Create a natural language prompt describing the desired function, e.g., "Calculate the square of a number."
 2. **Run the Model**:
    ```bash
-   python main.py --prompt "Calculate the square of a number"
+   python main.py
    ```
 3. **Output**: The model returns the matched function (e.g., `square(num)`) and optimized parameters (e.g., `num=5`).
-
-### Example
-```bash
-$ python main.py --prompt "Sort a list of numbers in ascending order"
-Output:
-Matched Function: sort_list
-Parameters: list=[3, 1, 4, 1, 5], order='ascending'
-Result: [1, 1, 3, 4, 5]
-```
 
 ## How It Works
 FunctionX-Nano uses lightweight NLP techniques (e.g., rule-based parsing, keyword matching, or small-scale embeddings) to analyze user prompts. It matches prompts to a predefined or user-defined function library using semantic analysis and similarity scoring. Parameters are extracted and optimized based on entities or constraints in the prompt. Unlike MCP systems reliant on LLMs, FunctionX-Nano achieves similar functionality with minimal resource overhead, making it suitable for low-resource environments.
