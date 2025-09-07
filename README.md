@@ -1,3 +1,5 @@
+<img width="210" height="217" alt="taskx" src="https://github.com/user-attachments/assets/4e16f1b5-9a73-47cd-a019-b4266d58491f" />
+
 # TaskX-Nano
 
 ## Overview
