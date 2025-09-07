@@ -62,7 +62,7 @@ def open_browser(website):
     except Exception as e:
         return f"Error opening browser: {str(e)}"
 
-@register_function("Search a query on Google in the default browser")
+@register_function("Search a query on Google in the default browser takes search query as input")
 def search_browser_google(query):
     """
     Search a query on Google in the default browser.
@@ -82,7 +82,7 @@ def search_browser_google(query):
 
 @register_function("Take a screenshot of the current screen")
 def take_screenshot():
-    sleep(1)  # Give user a moment to prepare
+    sleep(3)  # Give user a moment to prepare
     """
     Take a screenshot and open it in the default image viewer.
     """
@@ -105,3 +105,61 @@ def take_screenshot():
         return f"Screenshot taken and saved to {screenshot_path}"
     except Exception as e:
         return f"Error taking screenshot: {str(e)}"
+    
+
+@register_function("opens telegram on firefox")
+def open_telegram():
+    """
+    Open Telegram web in Firefox browser.
+    """
+    try:
+        webbrowser.open('https://web.telegram.org/a/#2083633131')
+        return "Telegram web opened in Firefox"
+    except webbrowser.Error:
+        return "Error: Firefox browser not found"
+    
+
+@register_function("run a program at window startup takes program path as input")
+def run_program_at_startup(program_path):
+    """
+    Add a program to the system startup.
+    """
+    program_path = str(program_path).replace(" " , '')
+    if not os.path.isfile(program_path):
+        return "Error: Program path is invalid"
+    
+    try:
+        if platform.system() == "Windows":
+            startup_folder = os.path.join(os.getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
+            shortcut_path = os.path.join(startup_folder, os.path.basename(program_path) + '.lnk')
+            with open(shortcut_path, 'w') as shortcut:
+                shortcut.write(f'[InternetShortcut]\nURL=file:///{program_path}\n')
+            return f"Program {program_path} added to startup"
+        else:
+            return "Error: This function is only implemented for Windows"
+    except Exception as e:
+        return f"Error adding program to startup: {str(e)}"
+    
+
+
+    
+@register_function("Open an application by its name takes program name as input")
+def open_application_by_name(application_name):
+    """
+    Open an application by its name using the system's default method.
+    """
+    if not application_name:
+        return "Error: No application name provided"
+    
+    try:
+        if platform.system() == "Windows":
+            # Use 'start' to open the application by name on Windows
+            subprocess.Popen(['start', '', application_name], shell=True)
+        else:
+            # On Unix-like systems, try to open the application directly
+            subprocess.Popen([application_name])
+        return f"Application '{application_name}' opened"
+    except FileNotFoundError:
+        return f"Error: Application '{application_name}' not found"
+    except Exception as e:
+        return f"Error opening application: {str(e)}"

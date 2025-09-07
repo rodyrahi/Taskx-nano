@@ -7,13 +7,13 @@ model_path = "fine_tuned_spacy_model"
 nlp = spacy.load(model_path)
 
 # Load the all-mpnet-base-v2 model
-model = SentenceTransformer('all-mpnet-base-v2')
+model = SentenceTransformer('multi-qa-mpnet-base-dot-v1')
 
 
 
 # Input dictionary
 input_data = {
-    "prompt": "open kamingo.in and take a screenshot"
+    "prompt": "open steam on my computer"
 }
 
 def extract_parameters(prompt, function_name=None):
@@ -22,19 +22,22 @@ def extract_parameters(prompt, function_name=None):
     """
     doc = nlp(prompt)
     parameters = []
-    valid_labels = ["PARAMETER", "URL_PARAMETER", "TEXT_PARAMETER", "PLATFORM_PARAMETER"]
+    valid_labels = ["PARAMETER", "URL_PARAMETER", "TEXT_PARAMETER", "PLATFORM_PARAMETER" , "FILE_PATH_PARAMETER", "PROGRAM_NAME_PARAMETER"]
 
     # Get expected parameter types
     if function_name and function_name in function_registry:
         expected_param_types = function_registry[function_name].get("param_types", [])
     else:
-        expected_param_types = ["URL", "NUMBER", "TEXT"]
+        expected_param_types = ["URL", "NUMBER", "TEXT" , "FILE_PATH", "PROGRAM"]
 
     # Examples for parameter types
     param_type_examples = {
         "URL": ["example.com", "kamingo.in", "https://google.com"],
         "NUMBER": [42, 100, 3.14, 5, 3],
-        "TEXT": ["hello world", "search query", "browser", "notepad", "result", "cat videos"],
+        "TEXT": ["hello world", "search query", "browser", "notepad", "result", "cat videos" ] ,
+        "FILE_PATH": ["C:/path/to/file.txt", "D:/documents/report.docx", "/home/user/file.txt", "D:/startup/new_model/test.bat"],
+        "PROGRAM": ["notepad", "chrome", "firefox", "stream", "outlook"],
+
     }
 
     # Flatten examples for encoding
@@ -65,6 +68,13 @@ def extract_parameters(prompt, function_name=None):
         max_similarity_idx = similarities.argmax()
         matched_type = example_labels[max_similarity_idx]
         max_similarity = similarities[max_similarity_idx]
+
+        if ent.label_ == "FILE_PATH_PARAMETER":
+
+            clean_text = clean_text.strip('"\'')  
+            clean_text = clean_text.replace(' ', '')
+
+
 
         print(f"Entity: {clean_text}, Label: {ent.label_}, "
               f"Matched Type: {matched_type}, Similarity: {max_similarity}")

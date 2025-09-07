@@ -1,37 +1,34 @@
-{"prompt": "write hello world in notepad", "entities": [[0, 5, "FUNCTION"], [6, 17, "TEXT_PARAMETER"]]}
-{"prompt": "write rajvendra rahi in notepad", "entities": [[0, 5, "FUNCTION"], [6, 20, "TEXT_PARAMETER"]]}
-{"prompt": "write hey there in notepad", "entities": [[0, 5, "FUNCTION"], [6, 15, "TEXT_PARAMETER"]]}
-{"prompt": "open kamingo.in in the browser", "entities": [[5, 15, "URL_PARAMETER"], [23, 30, "FUNCTION"]]}
-
-{"prompt": "search for cat videos on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [11, 21, "TEXT_PARAMETER"], [36, 67, "FUNCTION"]]}
-
-{"prompt": "search dog pictures on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 19, "TEXT_PARAMETER"], [34, 65, "FUNCTION"]]}
-
-{"prompt": "search latest news on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 18, "TEXT_PARAMETER"], [33, 64, "FUNCTION"]]}
-
-{"prompt": "search weather today on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 20, "TEXT_PARAMETER"], [35, 66, "FUNCTION"]]}
-
-{"prompt": "search python tutorials on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 24, "TEXT_PARAMETER"], [39, 70, "FUNCTION"]]}
-
-{"prompt": "search football highlights on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 28, "TEXT_PARAMETER"], [43, 74, "FUNCTION"]]}
-
-{"prompt": "search cooking recipes on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 23, "TEXT_PARAMETER"], [38, 69, "FUNCTION"]]}
-
-{"prompt": "search space exploration on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 25, "TEXT_PARAMETER"], [40, 71, "FUNCTION"]]}
-
-{"prompt": "search stock market updates on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 30, "TEXT_PARAMETER"], [45, 76, "FUNCTION"]]}
-
-{"prompt": "search funny memes on google and take a screenshot of the result",
- "entities": [[0, 6, "FUNCTION"], [7, 19, "TEXT_PARAMETER"], [34, 65, "FUNCTION"]]}
-
-
-
+{"prompt": "write hello world in notepad", "entities": [[0, 5, "FUNCTION"], [6, 17, "TEXT_PARAMETER"], [21, 28, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "write rajvendra rahi in notepad", "entities": [[0, 5, "FUNCTION"], [6, 20, "TEXT_PARAMETER"], [24, 31, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "write hey there in notepad", "entities": [[0, 5, "FUNCTION"], [6, 15, "TEXT_PARAMETER"], [19, 26, "PROGRAM_NAME_PARAMETER"]]}
+// {"prompt": "open kamingo.in in the browser", "entities": [[0, 4, "FUNCTION"], [5, 15, "URL_PARAMETER"], [23, 30, "FUNCTION"]]}
+{"prompt": "search for cat videos on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [11, 21, "TEXT_PARAMETER"], [36, 53, "FUNCTION"]]}
+{"prompt": "search dog pictures on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 19, "TEXT_PARAMETER"], [34, 51, "FUNCTION"]]}
+{"prompt": "search latest news on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 18, "TEXT_PARAMETER"], [33, 50, "FUNCTION"]]}
+{"prompt": "search weather today on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 20, "TEXT_PARAMETER"], [35, 52, "FUNCTION"]]}
+{"prompt": "search python tutorials on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 23, "TEXT_PARAMETER"], [38, 55, "FUNCTION"]]}
+{"prompt": "search football highlights on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 26, "TEXT_PARAMETER"], [41, 58, "FUNCTION"]]}
+{"prompt": "search cooking recipes on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 22, "TEXT_PARAMETER"], [37, 54, "FUNCTION"]]}
+{"prompt": "search space exploration on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 24, "TEXT_PARAMETER"], [39, 56, "FUNCTION"]]}
+{"prompt": "search stock market updates on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 27, "TEXT_PARAMETER"], [42, 59, "FUNCTION"]]}
+{"prompt": "search funny memes on google and take a screenshot of the result", "entities": [[0, 6, "FUNCTION"], [7, 18, "TEXT_PARAMETER"], [33, 50, "FUNCTION"]]}
+{"prompt": "D:/startup/new_model/test.bat set it to start at windows startup", "entities": [[0, 29, "FILE_PATH_PARAMETER"], [30, 64, "FUNCTION"]]}
+{"prompt": "Add D:/startup/new_model/test.bat to Windows startup", "entities": [[4, 33, "FILE_PATH_PARAMETER"], [34, 52, "FUNCTION"]]}
+{"prompt": "Make D:/startup/new_model/test.bat run automatically when Windows starts", "entities": [[5, 34, "FILE_PATH_PARAMETER"], [35, 72, "FUNCTION"]]}
+{"prompt": "Configure Windows to start D:/startup/new_model/test.bat on boot", "entities": [[27, 56, "FILE_PATH_PARAMETER"], [0, 26, "FUNCTION"]]}
+{"prompt": "Ensure D:/startup/new_model/test.bat launches at system startup", "entities": [[7, 36, "FILE_PATH_PARAMETER"], [37, 63, "FUNCTION"]]}
+{"prompt": "Schedule D:/startup/new_model/test.bat to open at Windows startup", "entities": [[9, 38, "FILE_PATH_PARAMETER"], [39, 65, "FUNCTION"]]}
+{"prompt": "open outlook in my computer", "entities": [[0, 4, "FUNCTION"], [5, 12, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "launch outlook on my computer", "entities": [[0, 6, "FUNCTION"], [7, 14, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "start outlook in my pc", "entities": [[0, 5, "FUNCTION"], [6, 13, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "open outlook app on computer", "entities": [[0, 4, "FUNCTION"], [5, 12, "PROGRAM_NAME_PARAMETER"], [13, 16, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "please open outlook on my computer", "entities": [[7, 11, "FUNCTION"], [12, 19, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "can you launch outlook on my pc", "entities": [[8, 14, "FUNCTION"], [15, 22, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "open excel app on computer", "entities": [[0, 4, "FUNCTION"], [5, 14, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "launch steam on computer", "entities": [[0, 6, "FUNCTION"], [7, 12, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "start chrome browser in pc", "entities": [[0, 5, "FUNCTION"], [6, 20, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "open vlc player on my computer", "entities": [[0, 4, "FUNCTION"], [5, 15, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "run word app in my pc", "entities": [[0, 3, "FUNCTION"], [4, 12, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "please start powerpoint on computer", "entities": [[7, 12, "FUNCTION"], [13, 23, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "open spotify app on pc", "entities": [[0, 4, "FUNCTION"], [5, 12, "PROGRAM_NAME_PARAMETER"], [13, 16, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "launch discord in my computer", "entities": [[0, 6, "FUNCTION"], [7, 14, "PROGRAM_NAME_PARAMETER"]]}
