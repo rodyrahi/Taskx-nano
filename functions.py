@@ -6,6 +6,9 @@ import webbrowser
 import urllib.parse
 import platform
 
+
+from selenium_checkin import ckeckin_to_emp , ckeckout_to_emp
+
 # Global registry for functions and their metadata
 function_registry = {}
 
@@ -57,7 +60,8 @@ def open_browser(website):
         return "Error: No website URL provided"
     
     if not website.startswith(("http://", "https://")):
-        website = "https://" + website
+        pass
+        # website = "https://" + website
     
     try:
         webbrowser.open(website)
@@ -162,3 +166,20 @@ def open_application_by_name(application_name):
         return f"Error: Application '{application_name}' not found"
     except Exception as e:
         return f"Error opening application: {str(e)}"
+
+
+
+@register_function("this function checkes me in the emp monitor ex. check me in ", param_types=None)
+def checkin():
+    if ckeckin_to_emp():
+        return "Checked in to emp monitor"
+
+    return "Error in checking in to emp monitor"
+
+
+@register_function("this function checkes me out the emp monitor ex. check me out", param_types=None)
+def checkout():
+    if ckeckout_to_emp():
+        return "Checked out to emp monitor"
+
+    return "Error in checking out to emp monitor"

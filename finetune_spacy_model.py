@@ -30,6 +30,10 @@ ner = nlp.add_pipe("ner")
 ner.add_label("PARAMETER")  # For numeric parameters
 ner.add_label("URL_PARAMETER")  # For URL parameters
 ner.add_label("FUNCTION")  # For function names
+ner.add_label("TEXT")  # For text parameters
+ner.add_label("PROGRAM_NAME_PARAMETER")  # For program names
+ner.add_label("FILE_PATH_PARAMETER")  # For file paths
+
 
 # Load training data from JSONL with error handling
 TRAIN_DATA = []

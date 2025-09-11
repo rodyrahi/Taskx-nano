@@ -6,12 +6,21 @@ from torch.utils.data import DataLoader
 # Create training examples
 train_examples = [
     # Positive pairs (prompt matches function description)
-    InputExample(texts=["open steam application", "Open a software application by name"], label=1.0),
-    InputExample(texts=["open notepad", "Open a software application by name"], label=1.0),
-    InputExample(texts=["launch discord", "Open a software application by name"], label=1.0),
-    InputExample(texts=["search google for cats", "Perform a web search on a specified engine"], label=1.0),
-    InputExample(texts=["search bing for news", "Perform a web search on a specified engine"], label=1.0),
-    InputExample(texts=["save file to C:/data.txt", "Save a file to a specified path"], label=1.0),
+    InputExample(texts=["open steam application with parameters of types: [PROGRAM]", "Open a software application by name with parameters type : ['PROGRAM_NAME_PARAMETER'] and required parameters : ('text',)"], label=1.0),
+    
+    InputExample(texts=["open notepad with parameters of types: [PROGRAM]", "Open a software application by name with parameters type : ['PROGRAM_NAME_PARAMETER'] and required parameters : ('text',)"], label=1.0),
+    InputExample(texts=["launch discord with parameters of types: [PROGRAM]", "Open a software application by name with parameters type : ['PROGRAM_NAME_PARAMETER'] and required parameters : ('text',)"], label=1.0),
+
+
+
+    InputExample(texts=["search google for cats with parameters of types: [URL]", "Perform a web search on a specified engine with parameters type : ['URL_PARAMETER'] and required parameters : ('text',)"], label=1.0),
+    
+    
+    InputExample(texts=["search bing for news with parameters of types: [URL]", "Perform a web search on a specified engine with parameters type : ['URL_PARAMETER'] and required parameters : ('text',)"], label=1.0),
+    InputExample(texts=["save file to C:/data.txt with parameters of types: [FILE_PATH]", "Save a file to a specified path with parameters type : ['FILE_PATH_PARAMETER'] and required parameters : ('text',)"], label=1.0),
+
+
+
     # Negative pairs (prompt does not match function description)
     InputExample(texts=["open steam application", "Perform a web search on a specified engine"], label=0.0),
     InputExample(texts=["open steam application", "Save a file to a specified path"], label=0.0),
@@ -22,7 +31,7 @@ train_examples = [
 ]
 
 # Load the model
-model = SentenceTransformer('multi-qa-mpnet-base-dot-v1')
+model = SentenceTransformer('BAAI/bge-base-en')
 
 # Create DataLoader
 train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=16)
