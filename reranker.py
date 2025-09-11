@@ -139,7 +139,7 @@ def rerank_functions(data, query, fixing_data=fixing_data, positive_weight=0.5, 
 
     # Compute adjusted scores
     adjusted_scores = []
-    for i, func in enumerate(functions):
+    for i, func in enumerate(functions[:5]):
         func_name = func["name"]
         original_score = func["original_score"]
         
