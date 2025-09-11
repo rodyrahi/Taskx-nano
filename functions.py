@@ -5,9 +5,10 @@ from time import sleep
 import webbrowser
 import urllib.parse
 import platform
+import PIL 
 
 
-from selenium_checkin import ckeckin_to_emp , ckeckout_to_emp
+# from selenium_checkin import ckeckin_to_emp , ckeckout_to_emp
 
 # Global registry for functions and their metadata
 function_registry = {}
@@ -171,15 +172,15 @@ def open_application_by_name(application_name):
 
 @register_function("this function checkes me in the emp monitor ex. check me in ", param_types=None)
 def checkin():
-    if ckeckin_to_emp():
-        return "Checked in to emp monitor"
+    # if ckeckin_to_emp():
+    #     return "Checked in to emp monitor"
 
     return "Error in checking in to emp monitor"
 
 
 @register_function("this function checkes me out the emp monitor ex. check me out", param_types=None)
 def checkout():
-    if ckeckout_to_emp():
-        return "Checked out to emp monitor"
+    # if ckeckout_to_emp():
+    #     return "Checked out to emp monitor"
 
     return "Error in checking out to emp monitor"
