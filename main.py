@@ -9,11 +9,11 @@ model_path = "fine_tuned_spacy_model"
 nlp = spacy.load(model_path)
 
 # Load the BGE-base-en model
-model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B")
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Input dictionary
 input_data = {
-    "prompt": "search for cat videos and then take a screenshot"
+    "prompt": "open calculator"
 }
 
 functions_score = []
@@ -170,7 +170,10 @@ def find_best_function_bge(command, detected_types=None):
         
         print(f"Function: {func_name}, Sim: {sim_score:.3f}, Type: {type_score:.3f}, Total: {total_score:.3f}")
 
-        functions_score.append((func_name , func_info["description"] , total_score))
+        functions_score.append((func_name, func_info["description"], total_score))
+
+        # Sort functions_score by total_score in descending order
+        sorted_functions_score = sorted(functions_score, key=lambda x: x[2], reverse=True)
 
         
 
@@ -179,9 +182,9 @@ def find_best_function_bge(command, detected_types=None):
         # if total_score > best_score and total_score > similarity_threshold:
         #     best_score = total_score
         #     best_function_name = func_name
-    
 
-    reranks = rerank_functions(functions_score, command)
+
+    reranks = rerank_functions(sorted_functions_score, command)
 
     best_function_name = reranks[0]['name']
     best_score = reranks[0]['adjusted_score']
