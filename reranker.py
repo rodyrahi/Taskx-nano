@@ -5,7 +5,7 @@ import numpy as np
 fixing_data = {
     "Write text to a text editor": {
         "positive": ["write note in notepad", "open text editor to write", "edit text in notepad"],
-        "negative": ["search on google", "open website", "take screenshot", "open steam"]
+        "negative": ["search on google", "open website", "take screenshot", "open steam" , "write a poem"]
     },
     "Open a website in the default browser": {
         "positive": ["open chrome", "launch browser", "go to website"],
@@ -25,11 +25,11 @@ fixing_data = {
     },
     "Run a program at Windows startup takes program path as input": {
         "positive": ["set program to start on boot", "run app at startup", "launch program on windows start"],
-        "negative": ["search videos", "open telegram", "take screenshot"]
+        "negative": ["search videos", "open telegram", "take screenshot" , "write a poem"]
     },
     "Launch an application or program by its name on the computer": {
         "positive": ["launch notepad", "open chrome by name", "start application", "open steam"],
-        "negative": ["search google", "check in", "take screenshot"]
+        "negative": ["search google", "check in", "take screenshot" , "write a poem"]
     },
     "This function checks me in the emp monitor ex. check me in": {
         "positive": ["check me in employee monitor", "log in to emp monitor", "employee check in"],
@@ -38,7 +38,12 @@ fixing_data = {
     "This function checks me out the emp monitor ex. check me out": {
         "positive": ["check me out employee monitor", "log out of emp monitor", "employee check out"],
         "negative": ["check me in employee monitor", "log in to emp monitor", "employee check in", "open steam"]
-    }
+    },
+
+    "this function will use llm to answer questions": {
+        "positive": ["write a poem", "draft an email", "create a story", "compose a message"],
+        "negative": ["open notepad", "search google", "take screenshot", "open steam"]  
+        }
 }
 
 def rerank_functions(data, query, fixing_data=fixing_data, desc_weight=0.3, positive_weight=0.7, negative_weight=0.2, model_name='all-MiniLM-L6-v2'):
@@ -91,7 +96,7 @@ def rerank_functions(data, query, fixing_data=fixing_data, desc_weight=0.3, posi
         adjusted_score = original_score + desc_weight * desc_sim + positive_weight * pos_sim - negative_weight * neg_sim
         
         # Debug output for similarity values
-        print(f"Function: {func['name']}, Desc Sim: {desc_sim:.4f}, Pos Sim: {pos_sim:.4f}, Neg Sim: {neg_sim:.4f}, Original Score: {original_score:.4f}, Adjusted Score: {adjusted_score:.4f}")
+        # print(f"Function: {func['name']}, Desc Sim: {desc_sim:.4f}, Pos Sim: {pos_sim:.4f}, Neg Sim: {neg_sim:.4f}, Original Score: {original_score:.4f}, Adjusted Score: {adjusted_score:.4f}")
         
         adjusted_scores.append({
             "name": func["name"],
@@ -101,7 +106,12 @@ def rerank_functions(data, query, fixing_data=fixing_data, desc_weight=0.3, posi
 
     # Sort by adjusted score
     adjusted_scores.sort(key=lambda x: x["adjusted_score"], reverse=True)
-    print(adjusted_scores)
+
+    print( "\n")
+    for item in adjusted_scores:
+       
+        print(f"Func: {item['name']}, Adjusted Score: {item['adjusted_score']:.2f}")
+    print( "\n")
     return adjusted_scores
 
 if __name__ == "__main__":

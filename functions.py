@@ -5,18 +5,20 @@ from time import sleep
 import webbrowser
 import urllib.parse
 import platform
-import PIL 
-
-
-# from selenium_checkin import ckeckin_to_emp , ckeckout_to_emp
+from typing import Type, Union, List, Dict, Any  # For type annotations
 
 # Global registry for functions and their metadata
 function_registry = {}
 
-# Decorator to register functions with description and param_types
-def register_function(description, param_types=None):
+# Decorator to register functions with description, param_types, and output_type
+def register_function(description: str, param_types: List[str] = None, output_type: Type = None):
     """
-    Decorator to register a function with its description and parameter types.
+    Decorator to register a function with its description, parameter types, and output type.
+    
+    Args:
+        description (str): Description of the function.
+        param_types (List[str], optional): List of parameter types (e.g., ["TEXT", "URL"]).
+        output_type (Type, optional): Expected return type of the function (e.g., str, list).
     """
     if param_types is None:
         param_types = []
@@ -26,13 +28,15 @@ def register_function(description, param_types=None):
             "function": func,
             "description": description,
             "required_params": getattr(func, "__code__").co_varnames[:func.__code__.co_argcount],
-            "param_types": param_types
+            "param_types": param_types,
+            "output_type": output_type.__name__ if output_type else "Any"  # Store type name as string
         }
         return func
     return decorator
 
-@register_function("Write text to a text editor", param_types=["TEXT"])
-def open_notepad(text):
+# Example functions (unchanged except for the updated decorator usage)
+@register_function("Write text to a text editor", param_types=["TEXT"], output_type=str)
+def open_notepad(text: str) -> str:
     """
     Write text to a temporary file and open it in the default text editor.
     """
@@ -52,8 +56,8 @@ def open_notepad(text):
     except FileNotFoundError:
         return "Error: Text editor not found"
 
-@register_function("Open a website in the default browser", param_types=["URL"])
-def open_browser(website):
+@register_function("Open a website in the default browser", param_types=["URL"], output_type=str)
+def open_browser(website: str) -> str:
     """
     Open a website in the default browser.
     """
@@ -61,8 +65,7 @@ def open_browser(website):
         return "Error: No website URL provided"
     
     if not website.startswith(("http://", "https://")):
-        pass
-        # website = "https://" + website
+        website = "https://" + website
     
     try:
         webbrowser.open(website)
@@ -70,8 +73,8 @@ def open_browser(website):
     except Exception as e:
         return f"Error opening browser: {str(e)}"
 
-@register_function("Search a query on Google in the default browser", param_types=["TEXT"])
-def search_browser_google(query):
+@register_function("Search a query on Google in the default browser", param_types=["TEXT"], output_type=str)
+def search_browser_google(query: str) -> str:
     """
     Search a query on Google in the default browser.
     """
@@ -87,8 +90,8 @@ def search_browser_google(query):
     except Exception as e:
         return f"Error opening search: {str(e)}"
 
-@register_function("Take a screenshot of the current screen", param_types=[])
-def take_screenshot():
+@register_function("Take a screenshot of the current screen", param_types=[], output_type=str)
+def take_screenshot() -> str:
     sleep(3)
     """
     Take a screenshot and open it in the default image viewer.
@@ -112,8 +115,8 @@ def take_screenshot():
     except Exception as e:
         return f"Error taking screenshot: {str(e)}"
 
-@register_function("Open Telegram web in Firefox", param_types=[])
-def open_telegram():
+@register_function("Open Telegram web in Firefox", param_types=[], output_type=str)
+def open_telegram() -> str:
     """
     Open Telegram web in Firefox browser.
     """
@@ -123,8 +126,8 @@ def open_telegram():
     except webbrowser.Error:
         return "Error: Firefox browser not found"
 
-@register_function("Run a program at Windows startup takes program path as input", param_types=["FILE_PATH"])
-def run_program_at_startup(program_path):
+@register_function("Run a program at Windows startup takes program path as input", param_types=["FILE_PATH"], output_type=str)
+def run_program_at_startup(program_path: str) -> str:
     """
     Add a program to the system startup.
     """
@@ -144,19 +147,17 @@ def run_program_at_startup(program_path):
     except Exception as e:
         return f"Error adding program to startup: {str(e)}"
 
-@register_function("Launch an application or program by its name on the computer", param_types=["PROGRAM"])
-def open_application_by_name(application_name):
+@register_function("Launch an application or program by its name on the computer", param_types=["PROGRAM"], output_type=str)
+def open_application_by_name(application_name: str) -> str:
     """
     Open an application by its name using the system's default method.
     """
-
-    application_name = str(application_name)+ ".exe"
+    application_name = str(application_name) + ".exe"
     if not application_name:
         return "Error: No application name provided"
     
     try:
         if platform.system() == "Windows":
-            # Use 'os.startfile' for best compatibility with Windows
             os.startfile(application_name)
         elif platform.system() == "Darwin":
             subprocess.Popen(['open', '-a', application_name])
@@ -168,19 +169,32 @@ def open_application_by_name(application_name):
     except Exception as e:
         return f"Error opening application: {str(e)}"
 
-
-
-@register_function("this function checkes me in the emp monitor ex. check me in ", param_types=None)
-def checkin():
+@register_function("Checks me in to the emp monitor", param_types=None, output_type=str)
+def checkin() -> str:
     # if ckeckin_to_emp():
     #     return "Checked in to emp monitor"
-
     return "Error in checking in to emp monitor"
 
-
-@register_function("this function checkes me out the emp monitor ex. check me out", param_types=None)
-def checkout():
+@register_function("Checks me out of the emp monitor", param_types=None, output_type=str)
+def checkout() -> str:
     # if ckeckout_to_emp():
     #     return "Checked out to emp monitor"
-
     return "Error in checking out to emp monitor"
+
+@register_function("Uses LLM to answer questions", param_types=["PROMPT"], output_type=str)
+def call_llm(prompt: str) -> str:
+    """
+    Uses an LLM to generate a response to the given prompt.
+    """
+    # Placeholder response for demonstration
+    return "Roses are red, violets are blue, I'm an LLM, answering for you!"
+
+# Example: Print the function registry to verify
+if __name__ == "__main__":
+    for func_name, metadata in function_registry.items():
+        print(f"Function: {func_name}")
+        print(f"  Description: {metadata['description']}")
+        print(f"  Parameters: {metadata['required_params']}")
+        print(f"  Parameter Types: {metadata['param_types']}")
+        print(f"  Output Type: {metadata['output_type']}")
+        print()

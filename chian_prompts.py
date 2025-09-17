@@ -14,7 +14,7 @@ def fine_tune_model():
     train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=2)
     train_loss = losses.CosineSimilarityLoss(model)
     model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=1, warmup_steps=10)
-    model.save('finetuned_model')
+    model.save('split_finetuned_model')
     return model
 
 # Load or fine-tune model
@@ -32,23 +32,23 @@ def is_compatible(output_desc, input_desc, threshold=0.7):
     sim = util.cos_sim(get_embedding(output_desc), get_embedding(input_desc))[0][0]
     return sim >= threshold
 
-# def infer_output_desc(instruction):
-#     if "write a poem" in instruction.lower():
-#         return "generated poem text"
-#     return "generic output"
+def infer_output_desc(instruction):
+    if "write a poem" in instruction.lower():
+        return "generated poem text"
+    return "generic output"
 
-# def infer_input_desc(instruction):
-#     if "put it in notepad" in instruction.lower():
-#         return "text to put in notepad"
-#     return None
+def infer_input_desc(instruction):
+    if "put it in notepad" in instruction.lower():
+        return "text to put in notepad"
+    return None
 
-# def run_function(instruction, input_data=None):
-#     """Your function runner - replace with actual."""
-#     if "write a poem" in instruction:
-#         return "Roses are red, violets are blue, AI writes poems, just for you."
-#     elif "put it in notepad" in instruction:
-#         return f"Saved to notepad: {input_data or 'No content provided'}"
-#     return "Output"
+def run_function(instruction, input_data=None):
+    """Your function runner - replace with actual."""
+    if "write a poem" in instruction:
+        return "Roses are red, violets are blue, AI writes poems, just for you."
+    elif "put it in notepad" in instruction:
+        return f"Saved to notepad: {input_data or 'No content provided'}"
+    return "Output"
 
 def chain_instructions(instructions):
     results = []
@@ -67,7 +67,7 @@ def chain_instructions(instructions):
     return results
 
 # Example
-instructions = ["write a email" , "take screen shot"]
+instructions = ["write a email" , "write a poem" , "put it in notepad"]
 execution_plan = chain_instructions(instructions)
 
 print("\nExecution Plan:")
