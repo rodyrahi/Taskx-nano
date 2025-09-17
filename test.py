@@ -6,6 +6,7 @@ from sentence_transformers import SentenceTransformer
 
 from functions import function_registry
 from split_prompt import split_into_actions
+from chian_prompts import create_instruction_chainer
 
 
 tick = time.time()
@@ -29,7 +30,7 @@ actions = split_into_actions(doc)
 
 
 
-prompt = "put it in notepad , required parmeter : program , and output type is : str , previous input : write a poem , and previous output type : str"
+prompt = "write a poem , required parmeter : prompt , and output type is : str "
 
 
 function_emdedings = []
@@ -73,7 +74,7 @@ index.add(embeddings)
 query_embedding = model.encode([prompt], convert_to_numpy=True)
 
 # Step 6: Search the FAISS index for the best match (k=1 for the single best match)
-k = 5
+k = 1
 distances, indices = index.search(query_embedding, k)
 
 
@@ -92,3 +93,12 @@ for i, idx in enumerate(indices[0]):
 
 
 # for action in actions:
+
+
+
+
+chain_instructions = create_instruction_chainer()
+    
+
+execution_plan_json = chain_instructions(actions)
+print(execution_plan_json)
