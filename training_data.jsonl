@@ -35,3 +35,9 @@
 {"prompt": "please start powerpoint on computer", "entities": [[7, 12, "FUNCTION"], [13, 23, "PROGRAM_NAME_PARAMETER"]]}
 {"prompt": "open spotify app on pc", "entities": [[0, 4, "FUNCTION"], [5, 12, "PROGRAM_NAME_PARAMETER"], [13, 16, "PROGRAM_NAME_PARAMETER"]]}
 {"prompt": "launch discord in my computer", "entities": [[0, 6, "FUNCTION"], [7, 14, "PROGRAM_NAME_PARAMETER"]]}
+
+
+
+
+{"prompt": "put in the notepad" , "entities": [[0, 18, ""]]}
+
