@@ -26,7 +26,7 @@ def extract_parameters(prompt: str, debug: bool = False):
     valid_labels = {
         "PARAMETER", "URL_PARAMETER", "TEXT_PARAMETER",
         "PLATFORM_PARAMETER", "FILE_PATH_PARAMETER",
-        "PROGRAM_NAME_PARAMETER", "PROMOT_PARAMETER"
+        "PROGRAM_NAME_PARAMETER", "PROMPT_PARAMETER"
     }
 
     # Collect ALL expected param types from the registry
@@ -46,7 +46,7 @@ def extract_parameters(prompt: str, debug: bool = False):
             "/home/user/file.txt", "D:/startup/new_model/test.bat"
         ],
         "PROGRAM": ["notepad", "chrome", "firefox", "outlook", "stream"],
-        "PROMPT": ["write a poem", "draft an email", "create a story", "compose a message"]
+        "PROMPT": ["write a poem", "draft an email", "create a story", "compose a message" , "write poem about raj and sugar"]
     }
 
     # Flatten examples for encoding

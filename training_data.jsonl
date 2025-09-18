@@ -39,5 +39,11 @@
 
 
 
-{"prompt": "put in the notepad" , "entities": [[0, 18, ""]]}
+// {"prompt": "put in the notepad" , "entities": [[0, 18, "FUNCTION"]]}
 
+// {"prompt": "write a poem about raj and sugar","entities": [[0, 22, "PROMPT_PARAMETER"]]}
+
+{
+    "prompt": "write a poem about raj and sugar and put it in notepad",
+    "entities": [[0, 21, "PROMPT_PARAMETER"], [21, 51, "FUNCTION"]]
+}

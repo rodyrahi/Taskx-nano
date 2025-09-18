@@ -12,6 +12,8 @@ from chian_prompts import create_instruction_chainer
 from extract_params import extract_parameters
 
 
+# print("Function Registry Loaded:" , function_registry)
+
 tick = time.time()
 
 
@@ -20,7 +22,7 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 
 
 nlp = spacy.load("en_core_web_sm")
-doc = nlp("write a poem and then put it in notepad")
+doc = nlp("write hello there and then put it in notepad")
 
 tock = time.time()
 
@@ -33,7 +35,7 @@ actions = split_into_actions(doc)
 
 
 
-prompt = "write a poem , required parmeter : prompt , and output type is : str "
+# prompt = "write a poem , required parmeter : prompt , and output type is : str "
 
 
 function_emdedings = []
@@ -79,7 +81,11 @@ index = faiss.IndexFlatIP(dimension)
 index.add(embeddings)
 
 
-
+def run_function(function_name, *args):
+    if function_name in function_registry:
+        func = function_registry[function_name]['function']
+        return func(*args)
+    return f"Error: Function '{function_name}' not found." 
 
 
 
@@ -101,8 +107,10 @@ def get_functions_from_actions(action):
     for i, idx in enumerate(indices[0]):
 
         if idx != -1:  # Skip invalid indices
-            print(f"Function: {function_names[idx]}")
-            print(f"Description: {texts[idx]} (Distance: {distances[0][i]:.4f})")
+            # print(f"Function: {function_names[idx]}")
+            # print(f"Description: {texts[idx]} (Distance: {distances[0][i]:.4f})")
+
+            return function_names[idx]
         else:
             print(f"No valid match found for rank {i+1} (Distance: {distances[0][i]:.4f})")
 
@@ -120,7 +128,9 @@ print(execution_plan_json)
 print("\n")
 
 
+outputs = {
 
+}
 
 
 for action in actions:
@@ -129,21 +139,32 @@ for action in actions:
 
     params = extract_parameters(action, debug=False)
 
+    params_list = [p[0] for p in params if p[0] is not None]
+    print(f"Extracted Raw Parameters: {params_list}")
+
     params = [p[1] for p in params if p[1] is not None]
 
     print(f"Extracted Parameters: {params}")
 
-    plan = [f for f in plans if f["input"] not in [None, "null"] and f["instruction"].lower() == action.lower()]
+    plan = [f for f in plans if f["instruction"].lower() == action.lower()]
 
     print("Filtered Plans:", plan)
-    if plan:
-
-        action = action
-    else:
+    if plan[0]['input'] is None:
         action = action + f"required parmeters : {params}"
-    
-    get_functions_from_actions(action)
+    else:
+        params_list = [outputs[plan[0]['input']]]
 
+    func = get_functions_from_actions(action)
+
+    function_output = run_function(func, *params_list)
+
+    # if not plan:
+    print(f"No matching plan found for action: {plan}")
+    outputs[plan[0]["output"]] = function_output
+
+    print(f"Function Output: {outputs}")
+
+    print(f"Matched Function: {func}")
     print("\n")
 
 
