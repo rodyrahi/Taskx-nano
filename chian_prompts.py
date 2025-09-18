@@ -23,7 +23,8 @@ def create_instruction_chainer(model_path='split_finetuned_model', pretrained_mo
             InputExample(texts=["generated text output", "text input for processing"], label=0.95),
             InputExample(texts=["output string", "input content"], label=0.9),
             InputExample(texts=["text result", "text data"], label=0.85),
-            InputExample(texts=["non-text data", "text input"], label=0.1)  # Negative example
+            InputExample(texts=["non-text data", "text input"], label=0.1),  # Negative example
+            InputExample(texts=["write hello there", "put it in notepad"], label=0.95)  # New negative example
 
         ]
         train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=2)
