@@ -25,7 +25,7 @@ def create_instruction_chainer(model_path='split_finetuned_model', pretrained_mo
             InputExample(texts=["text result", "text data"], label=0.85),
             InputExample(texts=["non-text data", "text input"], label=0.1),  # Negative example
             InputExample(texts=["write hello there", "put it in notepad"], label=0.95)  # New negative example
-
+            
         ]
         train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=2)
         train_loss = losses.CosineSimilarityLoss(model)
@@ -58,7 +58,7 @@ def create_instruction_chainer(model_path='split_finetuned_model', pretrained_mo
     def run_function(instruction, input_data=None, instruction_index=0):
         """Executes a single instruction with optional input, returning generic output."""
         if input_data:
-            return f"output{instruction_index + 1}: Processed {input_data}"
+            return f"output{instruction_index + 1}"
         return f"output{instruction_index + 1}"
 
     def chain_instructions(instructions):

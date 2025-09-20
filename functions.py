@@ -1,3 +1,5 @@
+import json
+import re
 import subprocess
 import tempfile
 import os
@@ -5,7 +7,17 @@ from time import sleep
 import webbrowser
 import urllib.parse
 import platform
-from typing import Type, Union, List, Dict, Any  # For type annotations
+from typing import Type, Union, List, Dict, Any
+
+import requests  # For type annotations
+
+
+
+from bs4 import BeautifulSoup
+import requests
+from lxml import html
+
+
 
 # Global registry for functions and their metadata
 function_registry = {}
@@ -98,6 +110,7 @@ def take_screenshot() -> str:
     """
     try:
         from PIL import ImageGrab
+
     except ImportError:
         return "Error: PIL module not found. Please install Pillow to use this function."
 
@@ -183,13 +196,113 @@ def checkout() -> str:
 
 @register_function("Uses LLM to answer questions", param_types=["PROMPT"], output_type=str)
 def call_llm(prompt: str) -> str:
+
+    print("Prompt received in call_llm:", prompt)
     """
-    Uses an LLM to generate a response to the given prompt.
+    Generate JSON from a local LLM given a schema and a prompt.
+
+    Args:
+        prompt (str): User's input prompt (e.g., "write a poem").
+        fields (List[Any]): List of Python types (e.g., [str, str, int]).
+        model (str): LLM model name (default: "gemma3:4b").
+        url (str): Ollama/LLM API URL.
+
+    Returns:
+        dict: Parsed JSON object from the model.
+
     """
-    # Placeholder response for demonstration
-    return "Roses are red, violets are blue, I'm an LLM, answering for you!"
+
+    model = "gemma3:4b"
+    url = "http://localhost:11434/api/chat"
+    fields = [str]
+
+    # Auto-generate schema from list of types
+    schema = {f"field{i+1}": t.__name__ if hasattr(t, "__name__") else str(t)
+              for i, t in enumerate(fields)}
+
+    payload = {
+        "model": model,
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a JSON generator. Always respond with ONLY valid JSON. "
+                           "No markdown, no code fences, no explanations."
+            },
+            {
+                "role": "user",
+                "content": f"""Schema:
+{json.dumps(schema, indent=2)}
+
+Input:
+{prompt}
+
+Output JSON:"""
+            }
+        ],
+        "stream": False
+    }
+
+    response = requests.post(url, json=payload)
+    data = response.json()
+
+    raw = data["message"]["content"].strip()
+
+    print(raw)
+
+    # Clean code fences if present
+    if raw.startswith("```"):
+        raw = re.sub(r"^```(?:json)?\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+
+    json_data = json.loads(raw)
+
+
+
+    if not isinstance(json_data, dict) or not all(key in json_data for key in schema):
+        raise ValueError("Generated JSON does not match the expected schema")
+
+    # Extract values and join as a space-separated string
+    values = [str(json_data[f"field{i+1}"]) for i in range(len(fields))]
+    return " ".join(values)
+
+    # try:
+    #     return json.loads(raw)
+    # except json.JSONDecodeError:
+    #     raise ValueError(f"Model did not return valid JSON: {raw}")
+    # return raw
 
 # Example: Print the function registry to verify
+
+
+@register_function("scrape html from a site and gives the output", param_types=["TEXT"], output_type=str)
+def scrape_website(url: str) -> str:
+    """
+    Scrape HTML content from a website and extract all <h1> and <p> text using lxml.
+
+    Args:
+        url (str): The URL of the website to scrape.
+    """
+
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        tree = html.fromstring(response.content)
+
+        h1_texts = [el.text_content().strip() for el in tree.xpath("//h1")]
+        p_texts = [el.text_content().strip() for el in tree.xpath("//p")]
+
+        result =  "\n".join(h1_texts) + "\n" + "\n".join(p_texts)
+        return result
+    except requests.RequestException as e:
+        return f"Error fetching {url}: {str(e)}"
+    except Exception as e:
+        return f"Error parsing HTML: {str(e)}"
+
+
+
+
 if __name__ == "__main__":
     for func_name, metadata in function_registry.items():
         print(f"Function: {func_name}")

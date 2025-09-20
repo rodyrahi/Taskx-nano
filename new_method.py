@@ -22,7 +22,7 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 
 
 nlp = spacy.load("en_core_web_sm")
-doc = nlp("write hello there and then put it in notepad")
+doc = nlp("scrape kamingo.in and summrize it and put it in notepad")
 
 tock = time.time()
 
@@ -152,7 +152,22 @@ for action in actions:
     if plan[0]['input'] is None:
         action = action + f"required parmeters : {params}"
     else:
-        params_list = [outputs[plan[0]['input']]]
+
+        
+        if "PROMPT" in params:
+            
+            # Get the value associated with "PROMPT" from params
+            prompt_index = params.index("PROMPT")
+            prompt_param = params_list[prompt_index] if prompt_index < len(params_list) else None
+            
+            prompt_param = str(prompt_param) + "\n"
+            # prompt_param = " ".join(prompt_param)
+
+            print(f"Prompt Param: {prompt_param}")    
+
+            params_list = [prompt_param +outputs[  plan[0]['input']   ]]
+        else:
+            params_list = [outputs[plan[0]['input']]]
 
     func = get_functions_from_actions(action)
 

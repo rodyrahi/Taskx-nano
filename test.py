@@ -101,11 +101,20 @@ Output JSON:"""
 
 # Example usage
 if __name__ == "__main__":
+    
+    def funnc(data):
+      for value in data.values():
+          yield value
+
+
+    data = {"text": "hey there", "number": 10}
+
+    print(list(funnc(data)))
     # Define schema via a list of types
 
 
     # field_types = [int , int]
-    field_types = [open_note["output_type"]]
+    # field_types = [open_note["output_type"]]
 
-    result = generate_json(prompt="write a poem", fields=field_types)
-    print(result)
+    # result = generate_json(prompt="write a poem", fields=field_types)
+    # print(result)
