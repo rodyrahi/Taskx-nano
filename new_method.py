@@ -21,8 +21,8 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 
 
 
-nlp = spacy.load("en_core_web_sm")
-doc = nlp("scrape kamingo.in and summrize it and put it in notepad")
+nlp = spacy.load("en_core_web_lg")
+doc = nlp("scrape kamingo.in and give me all the emails and put it in notepad")
 
 tock = time.time()
 
