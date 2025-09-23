@@ -1,6 +1,6 @@
-{"prompt": "write hello world in notepad", "entities": [[0, 5, "FUNCTION"], [6, 17, "TEXT_PARAMETER"], [21, 28, "PROGRAM_NAME_PARAMETER"]]}
-{"prompt": "write rajvendra rahi in notepad", "entities": [[0, 5, "FUNCTION"], [6, 20, "TEXT_PARAMETER"], [24, 31, "PROGRAM_NAME_PARAMETER"]]}
-{"prompt": "write hey there in notepad", "entities": [[0, 5, "FUNCTION"], [6, 15, "TEXT_PARAMETER"], [19, 26, "PROGRAM_NAME_PARAMETER"]]}
+{"prompt": "write hello world in notepad", "entities": [[0, 5, "FUNCTION"], [6, 17, "TEXT_PARAMETER"]]}
+{"prompt": "write rajvendra rahi in notepad", "entities": [[0, 5, "FUNCTION"], [6, 20, "TEXT_PARAMETER"]]}
+{"prompt": "write hey there in notepad", "entities": [[0, 5, "FUNCTION"], [6, 15, "TEXT_PARAMETER"]]}
 
 
 
@@ -55,3 +55,4 @@
 
 {"prompt":"scrape benhoyt.com" , "entities": [[7, 18, "URL_PARAMETER"]]}
 {"prompt":"scrape kamingo.in" , "entities": [[7, 17, "URL_PARAMETER"]]}
+{"prompt":"scrape temp-mail.io" , "entities": [[7, 19, "URL_PARAMETER"]]}

@@ -24,12 +24,15 @@ def create_instruction_chainer(model_path='split_finetuned_model', pretrained_mo
             InputExample(texts=["output string", "input content"], label=0.9),
             InputExample(texts=["text result", "text data"], label=0.85),
             InputExample(texts=["non-text data", "text input"], label=0.1),  # Negative example
-            InputExample(texts=["write hello there", "put it in notepad"], label=0.95)  # New negative example
+            InputExample(texts=["write hello there", "put it in notepad"], label=0.95) , # New negative example
+            InputExample(texts=["scrape kamingo.in", "give me all the emails"], label=0.95),
+            InputExample(texts=["scrape kamingo.in", "give me all the emails" , "put it in notepad"], label=0.95),  # New negative example
+            InputExample(texts=["give me all the emails", "put it in notepad"], label=0.9) , # New negative example
             
         ]
         train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=2)
         train_loss = losses.CosineSimilarityLoss(model)
-        model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=1, warmup_steps=10)
+        model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=10, warmup_steps=10)
         model.save(model_path)
         return model
 

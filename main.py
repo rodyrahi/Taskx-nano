@@ -17,12 +17,12 @@ from extract_params import extract_parameters
 tick = time.time()
 
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer('fine-tuned-mpnet')
 
 
 
 nlp = spacy.load("en_core_web_lg")
-doc = nlp("scrape kamingo.in and give me all the emails and put it in notepad")
+doc = nlp("scrape guerrillamail.com and get all the emails and put it in notepad")
 
 tock = time.time()
 
@@ -65,6 +65,7 @@ for function_name, function_info in function_registry.items():
         + " , and param types are : " + ", ".join([str(pt).lower() for pt in param_types])
     )
 
+    print(f"Embedding string for function {embed_string}")
     function_emdedings.append(embed_string)
 
 
@@ -96,7 +97,7 @@ def get_functions_from_actions(action):
     # index.normalize_L2(index.reconstruct_n(0, index.ntotal)) 
 
     # Step 6: Search the FAISS index for the best match (k=1 for the single best match)
-    k = 1
+    k = 5
     distances, indices = index.search(query_embedding, k)
 
 
@@ -105,6 +106,8 @@ def get_functions_from_actions(action):
 
 
     for i, idx in enumerate(indices[0]):
+        print(f"Function: {function_names[idx]}")
+        print(f"Description: {texts[idx]} (Distance: {distances[0][i]:.4f})")
 
         if idx != -1:  # Skip invalid indices
             # print(f"Function: {function_names[idx]}")
@@ -160,7 +163,7 @@ for action in actions:
             prompt_index = params.index("PROMPT")
             prompt_param = params_list[prompt_index] if prompt_index < len(params_list) else None
             
-            prompt_param = str(prompt_param) + "\n"
+            prompt_param = str(prompt_param) + "/// \n"
             # prompt_param = " ".join(prompt_param)
 
             print(f"Prompt Param: {prompt_param}")    

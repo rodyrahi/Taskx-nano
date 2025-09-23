@@ -102,31 +102,31 @@ def search_browser_google(query: str) -> str:
     except Exception as e:
         return f"Error opening search: {str(e)}"
 
-@register_function("Take a screenshot of the current screen", param_types=[], output_type=str)
-def take_screenshot() -> str:
-    sleep(3)
-    """
-    Take a screenshot and open it in the default image viewer.
-    """
-    try:
-        from PIL import ImageGrab
+# @register_function("Take a screenshot of the current screen", param_types=[], output_type=str)
+# def take_screenshot() -> str:
+#     sleep(3)
+#     """
+#     Take a screenshot and open it in the default image viewer.
+#     """
+#     try:
+#         from PIL import ImageGrab
 
-    except ImportError:
-        return "Error: PIL module not found. Please install Pillow to use this function."
+#     except ImportError:
+#         return "Error: PIL module not found. Please install Pillow to use this function."
 
-    try:
-        screenshot = ImageGrab.grab()
-        screenshot_path = os.path.join(tempfile.gettempdir(), f"screenshot_{os.urandom(4).hex()}.png")
-        screenshot.save(screenshot_path)
+#     try:
+#         screenshot = ImageGrab.grab()
+#         screenshot_path = os.path.join(tempfile.gettempdir(), f"screenshot_{os.urandom(4).hex()}.png")
+#         screenshot.save(screenshot_path)
         
-        if platform.system() == "Windows":
-            os.startfile(screenshot_path)
-        else:
-            subprocess.Popen(['xdg-open' if platform.system() == "Linux" else 'open', screenshot_path])
+#         if platform.system() == "Windows":
+#             os.startfile(screenshot_path)
+#         else:
+#             subprocess.Popen(['xdg-open' if platform.system() == "Linux" else 'open', screenshot_path])
         
-        return f"Screenshot taken and saved to {screenshot_path}"
-    except Exception as e:
-        return f"Error taking screenshot: {str(e)}"
+#         return f"Screenshot taken and saved to {screenshot_path}"
+#     except Exception as e:
+#         return f"Error taking screenshot: {str(e)}"
 
 @register_function("Open Telegram web in Firefox", param_types=[], output_type=str)
 def open_telegram() -> str:
@@ -196,20 +196,8 @@ def checkout() -> str:
 
 @register_function("Uses LLM to answer questions", param_types=["PROMPT"], output_type=str)
 def call_llm(prompt: str) -> str:
-
-    print("Prompt received in call_llm:", prompt)
     """
-    Generate JSON from a local LLM given a schema and a prompt.
-
-    Args:
-        prompt (str): User's input prompt (e.g., "write a poem").
-        fields (List[Any]): List of Python types (e.g., [str, str, int]).
-        model (str): LLM model name (default: "gemma3:4b").
-        url (str): Ollama/LLM API URL.
-
-    Returns:
-        dict: Parsed JSON object from the model.
-
+    Call local LLM (Ollama) to summarize text into JSON.
     """
 
     model = "gemma3:4b"
@@ -220,18 +208,20 @@ def call_llm(prompt: str) -> str:
     schema = {f"field{i+1}": t.__name__ if hasattr(t, "__name__") else str(t)
               for i, t in enumerate(fields)}
 
+    # Prepare messages for LLM
     payload = {
         "model": model,
         "messages": [
             {
                 "role": "system",
-                "content": "You are a JSON generator. Always respond with ONLY valid JSON. "
+                "content": "You are a helpful assistant. Always respond with ONLY valid JSON. "
                            "No markdown, no code fences, no explanations."
             },
             {
                 "role": "user",
                 "content": f"""Schema:
 {json.dumps(schema, indent=2)}
+
 
 Input:
 {prompt}
@@ -242,63 +232,98 @@ Output JSON:"""
         "stream": False
     }
 
+    print("Payload sent to LLM:", json.dumps(payload, indent=2))
+
     response = requests.post(url, json=payload)
     data = response.json()
 
     raw = data["message"]["content"].strip()
-
-    print(raw)
 
     # Clean code fences if present
     if raw.startswith("```"):
         raw = re.sub(r"^```(?:json)?\s*", "", raw)
         raw = re.sub(r"\s*```$", "", raw)
 
+    # Parse JSON
     json_data = json.loads(raw)
-
-
 
     if not isinstance(json_data, dict) or not all(key in json_data for key in schema):
         raise ValueError("Generated JSON does not match the expected schema")
 
-    # Extract values and join as a space-separated string
+    # Extract values
     values = [str(json_data[f"field{i+1}"]) for i in range(len(fields))]
     return " ".join(values)
 
-    # try:
-    #     return json.loads(raw)
-    # except json.JSONDecodeError:
-    #     raise ValueError(f"Model did not return valid JSON: {raw}")
-    # return raw
 
-# Example: Print the function registry to verify
+import requests
+from bs4 import BeautifulSoup
 
-
-@register_function("scrape html from a site and gives the output", param_types=["TEXT"], output_type=str)
+@register_function("scrape html from a website and gives the output", param_types=["TEXT"], output_type=str)
 def scrape_website(url: str) -> str:
     """
-    Scrape HTML content from a website and extract all <h1> and <p> text using lxml.
+    Scrape HTML content from a website and extract all <h1>, <p>, <span>, and <input> text using BeautifulSoup.
 
     Args:
         url (str): The URL of the website to scrape.
-    """
 
+    Returns:
+        str: Extracted text from <h1>, <p>, <span>, and <input> elements, or an error message.
+    """
+    # Ensure URL starts with http:// or https://
     if not url.startswith(("http://", "https://")):
         url = "https://" + url
+
     try:
-        response = requests.get(url)
-        response.raise_for_status()
-        tree = html.fromstring(response.content)
+        # Fetch the website content
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raise an exception for bad status codes
 
-        h1_texts = [el.text_content().strip() for el in tree.xpath("//h1")]
-        p_texts = [el.text_content().strip() for el in tree.xpath("//p")]
+        # Parse HTML with BeautifulSoup
+        soup = BeautifulSoup(response.content, "html.parser")
 
-        result =  "\n".join(h1_texts) + "\n" + "\n".join(p_texts)
-        return result
+        # Extract text from <h1>, <p>, <span> tags
+        h1_texts = [h1.get_text(strip=True) for h1 in soup.find_all("h1") if h1.get_text(strip=True)]
+        p_texts = [p.get_text(strip=True) for p in soup.find_all("p") if p.get_text(strip=True)]
+        span_texts = [span.get_text(strip=True) for span in soup.find_all("span") if span.get_text(strip=True)]
+
+        # Extract values from <input> tags
+        input_values = [inp.get("value", "").strip() for inp in soup.find_all("input") if inp.get("value")]
+
+        # Combine all extracted texts
+        result = "\n".join(h1_texts + p_texts + span_texts)
+        if input_values:
+            result += "\nInputs:\n" + "\n".join(input_values)
+
+        return result.strip() if result else "No relevant content found"
+
     except requests.RequestException as e:
         return f"Error fetching {url}: {str(e)}"
     except Exception as e:
         return f"Error parsing HTML: {str(e)}"
+
+
+@register_function("extract emails from text", param_types=["TEXT"], output_type=str)
+def extract_emails(text: str) -> str:
+    """
+    Extract all email addresses from the given text.
+
+    Args:
+        text (str): Input text containing email addresses.
+
+    Returns:
+        str: Comma-separated list of found email addresses, or a message if none found.
+    """
+    if not text:
+        return "Error: No text provided"
+
+    # Simple regex for email extraction
+    emails = re.findall(r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+", text)
+    if emails:
+        return ", ".join(emails)
+    else:
+        return "No email addresses found"
+    
+
 
 
 
