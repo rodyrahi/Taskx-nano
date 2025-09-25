@@ -22,7 +22,7 @@ model = SentenceTransformer('fine-tuned-mpnet')
 
 
 nlp = spacy.load("en_core_web_lg")
-doc = nlp("search for cat videos and take screenshot")
+doc = nlp("give me a creative name of a company and search it on google")
 
 tock = time.time()
 

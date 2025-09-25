@@ -11,7 +11,9 @@ train_examples = [
     InputExample(texts=["summarize it", "extract_emails : extract emails from text parameters required :('text',), output type is : str , and param types are : text"], label=0.1),
     InputExample(texts=["search for cat videos", "search a query on google in the default browser parameters required :('query',), output type is : str , and param types are : text"], label=0.95),
     InputExample(texts=["search for cat videos", "call_llm : uses llm to answer questions parameters required :('prompt',), output type is : str , and param types are : prompt"], label=0.1),
-
+    
+    InputExample(texts=["give me a creative name of a company", "uses llm to answer questions parameters required :('prompt',), output type is : str , and param types are : prompt"], label=0.9),
+    
     InputExample(texts=["summarize text using LLM", "Extract emails from text"], label=0.1),
     # Add more examples
 ]

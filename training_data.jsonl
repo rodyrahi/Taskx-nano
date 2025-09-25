@@ -59,3 +59,5 @@
 
 
 {"prompt": "search for cat videos", "entities": [[0, 6, "FUNCTION"], [11, 21, "TEXT_PARAMETER"]]}
+
+{"prompt": "give me a creative name of a company", "entities": [[0, 36, "PROMPT_PARAMETER"]]}
