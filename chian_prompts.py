@@ -28,6 +28,7 @@ def create_instruction_chainer(model_path='split_finetuned_model', pretrained_mo
             InputExample(texts=["scrape kamingo.in", "give me all the emails"], label=0.95),
             InputExample(texts=["scrape kamingo.in", "give me all the emails" , "put it in notepad"], label=0.95),  # New negative example
             InputExample(texts=["give me all the emails", "put it in notepad"], label=0.9) , # New negative example
+            InputExample(texts=["search for cat videos", "take screenshot"], label=0.1) ,
             
         ]
         train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=2)

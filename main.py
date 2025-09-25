@@ -22,7 +22,7 @@ model = SentenceTransformer('fine-tuned-mpnet')
 
 
 nlp = spacy.load("en_core_web_lg")
-doc = nlp("scrape guerrillamail.com and get all the emails and put it in notepad")
+doc = nlp("search for cat videos and take screenshot")
 
 tock = time.time()
 
@@ -174,7 +174,12 @@ for action in actions:
 
     func = get_functions_from_actions(action)
 
-    function_output = run_function(func, *params_list)
+    if function_registry[func].get("required_params"):
+        params_to_pass = params_list
+    else:
+        params_to_pass = []
+
+    function_output = run_function(func, *params_to_pass)
 
     # if not plan:
     print(f"No matching plan found for action: {plan}")

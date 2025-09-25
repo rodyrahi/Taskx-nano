@@ -102,31 +102,31 @@ def search_browser_google(query: str) -> str:
     except Exception as e:
         return f"Error opening search: {str(e)}"
 
-# @register_function("Take a screenshot of the current screen", param_types=[], output_type=str)
-# def take_screenshot() -> str:
-#     sleep(3)
-#     """
-#     Take a screenshot and open it in the default image viewer.
-#     """
-#     try:
-#         from PIL import ImageGrab
+@register_function("Take a screenshot of the current screen", param_types=[], output_type=str)
+def take_screenshot() -> str:
+    sleep(3)
+    """
+    Take a screenshot and open it in the default image viewer.
+    """
+    try:
+        from PIL import ImageGrab
 
-#     except ImportError:
-#         return "Error: PIL module not found. Please install Pillow to use this function."
+    except ImportError:
+        return "Error: PIL module not found. Please install Pillow to use this function."
 
-#     try:
-#         screenshot = ImageGrab.grab()
-#         screenshot_path = os.path.join(tempfile.gettempdir(), f"screenshot_{os.urandom(4).hex()}.png")
-#         screenshot.save(screenshot_path)
+    try:
+        screenshot = ImageGrab.grab()
+        screenshot_path = os.path.join(tempfile.gettempdir(), f"screenshot_{os.urandom(4).hex()}.png")
+        screenshot.save(screenshot_path)
         
-#         if platform.system() == "Windows":
-#             os.startfile(screenshot_path)
-#         else:
-#             subprocess.Popen(['xdg-open' if platform.system() == "Linux" else 'open', screenshot_path])
+        if platform.system() == "Windows":
+            os.startfile(screenshot_path)
+        else:
+            subprocess.Popen(['xdg-open' if platform.system() == "Linux" else 'open', screenshot_path])
         
-#         return f"Screenshot taken and saved to {screenshot_path}"
-#     except Exception as e:
-#         return f"Error taking screenshot: {str(e)}"
+        return f"Screenshot taken and saved to {screenshot_path}"
+    except Exception as e:
+        return f"Error taking screenshot: {str(e)}"
 
 @register_function("Open Telegram web in Firefox", param_types=[], output_type=str)
 def open_telegram() -> str:

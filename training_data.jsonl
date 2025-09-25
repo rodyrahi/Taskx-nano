@@ -56,3 +56,6 @@
 {"prompt":"scrape benhoyt.com" , "entities": [[7, 18, "URL_PARAMETER"]]}
 {"prompt":"scrape kamingo.in" , "entities": [[7, 17, "URL_PARAMETER"]]}
 {"prompt":"scrape temp-mail.io" , "entities": [[7, 19, "URL_PARAMETER"]]}
+
+
+{"prompt": "search for cat videos", "entities": [[0, 6, "FUNCTION"], [11, 21, "TEXT_PARAMETER"]]}
