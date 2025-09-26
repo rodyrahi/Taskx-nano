@@ -40,7 +40,7 @@ def extract_parameters(prompt: str, debug: bool = False):
     param_type_examples = {
         "URL": ["example.com", "https://google.com"],
         "NUMBER": ["42", "100", "3.14"],
-        "TEXT": ["hey there how are you", "hello world"],
+        "TEXT": ["hey there how are you", "hello world" , "current weather in tokyo"],
         "FILE_PATH": [
             "C:/path/to/file.txt", "D:/documents/report.docx",
             "/home/user/file.txt", "D:/startup/new_model/test.bat"

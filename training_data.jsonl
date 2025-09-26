@@ -61,3 +61,27 @@
 {"prompt": "search for cat videos", "entities": [[0, 6, "FUNCTION"], [11, 21, "TEXT_PARAMETER"]]}
 
 {"prompt": "give me a creative name of a company", "entities": [[0, 36, "PROMPT_PARAMETER"]]}
+
+
+{"prompt":"find the current weather in tokyo" , "entities": [ [0, 8, "FUNCTION"],[9, 33, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in india" , "entities": [ [0, 8, "FUNCTION"],[9, 33, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in new york" , "entities": [ [0, 8, "FUNCTION"],[9, 36, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in san francisco" , "entities": [ [0, 8, "FUNCTION"],[9, 41, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in los angeles" , "entities": [ [0, 8, "FUNCTION"],[9, 39, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in london" , "entities": [ [0, 8, "FUNCTION"],[9, 34, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in paris" , "entities": [ [0, 8, "FUNCTION"],[9, 33, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in berlin" , "entities": [ [0, 8, "FUNCTION"],[9, 34, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in tokyo japan" , "entities": [ [0, 8, "FUNCTION"],[9, 39, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in delhi" , "entities": [ [0, 8, "FUNCTION"],[9, 33, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in mumbai" , "entities": [ [0, 8, "FUNCTION"],[9, 34, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in sydney" , "entities": [ [0, 8, "FUNCTION"],[9, 34, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in melbourne" , "entities": [ [0, 8, "FUNCTION"],[9, 37, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in toronto" , "entities": [ [0, 8, "FUNCTION"],[9, 35, "TEXT_PARAMETER"]]}
+{"prompt":"find the current weather in vancouver" , "entities": [ [0, 8, "FUNCTION"],[9, 37, "TEXT_PARAMETER"]]}
+ 
+
+{"prompt": "suggest what I should wear if I plan to walk outside for 2 hours tomorrow" , "entities": [[0, 64, "PROMPT_PARAMETER"]]}
+
+
+
+

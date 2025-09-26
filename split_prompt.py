@@ -13,8 +13,8 @@ def split_into_actions(doc):
             # Check if the current token is a verb that starts a new action
             if token in action_verbs and i < len(sent) - 1:
                 next_token = sent[i + 1]
-                # Split if the next token is a conjunction, adverb, or part of a new verb phrase
-                if next_token.pos_ in ("CCONJ", "SCONJ", "ADV") or next_token.dep_ in ("conj", "advcl"):
+                # Split if the next token is a conjunction, adverb, comma, or part of a new verb phrase
+                if next_token.pos_ in ("CCONJ", "SCONJ", "ADV", "PUNCT") or next_token.dep_ in ("conj", "advcl"):
                     # Clean up current action
                     while current_action and current_action[-1].pos_ in ("CCONJ", "SCONJ", "ADV", "PUNCT"):
                         current_action.pop()
@@ -22,8 +22,8 @@ def split_into_actions(doc):
                         actions.append(" ".join(t.text for t in current_action))
                     current_action = []
             
-            # Also split if the current token is a conjunction followed by a verb
-            elif token.pos_ in ("CCONJ", "SCONJ", "ADV") and i < len(sent) - 1:
+            # Also split if the current token is a conjunction, comma, or adverb followed by a verb
+            elif token.pos_ in ("CCONJ", "SCONJ", "ADV", "PUNCT") and i < len(sent) - 1:
                 next_token = sent[i + 1]
                 if next_token.pos_ == "VERB":
                     # Clean up current action

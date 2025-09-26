@@ -30,7 +30,7 @@ ner = nlp.add_pipe("ner")
 ner.add_label("PARAMETER")  # For numeric parameters
 ner.add_label("URL_PARAMETER")  # For URL parameters
 ner.add_label("FUNCTION")  # For function names
-ner.add_label("TEXT")  # For text parameters
+ner.add_label("TEXT_PARAMETER")  # For text parameters
 ner.add_label("PROGRAM_NAME_PARAMETER")  # For program names
 ner.add_label("FILE_PATH_PARAMETER")  # For file paths
 
@@ -90,7 +90,7 @@ warmup_ner(nlp, TRAIN_DATA)
 other_pipes = [pipe for pipe in nlp.pipe_names if pipe not in ["ner", "transformer"]]
 with nlp.disable_pipes(*other_pipes):
     optimizer = nlp.begin_training()
-    optimizer.learn_rate = 0.00005
+    optimizer.learn_rate = 0.0001
     for epoch in range(150):
         random.shuffle(TRAIN_DATA)
         losses = {}
@@ -109,7 +109,7 @@ with nlp.disable_pipes(*other_pipes):
 nlp.to_disk("./fine_tuned_spacy_model")
 
 # Initialize FAISS for RAG
-embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+embedding_model = SentenceTransformer('multi-qa-mpnet-base-dot-v1')
 vector_size = embedding_model.get_sentence_embedding_dimension()
 faiss_index = faiss.IndexFlatL2(vector_size)  # L2 distance for similarity search
 metadata_store = []  # Store metadata alongside embeddings
@@ -218,7 +218,7 @@ def execute_function_chain(prompt, doc, rag_enabled=True):
 
 # Test the model with chaining and FAISS-based RAG
 nlp = spacy.load("./fine_tuned_spacy_model")
-test_prompt = "open grok , youtube and google each in tabs in browser"
+test_prompt = "find the current weather in tokyo"
 doc = nlp(test_prompt)
 print(f"\nTesting prompt: {test_prompt}")
 for ent in doc.ents:
